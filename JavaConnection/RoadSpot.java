@@ -1,9 +1,9 @@
 import org.json.simple.JSONArray;
+import org.json.JSONException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import java.util.ArrayList;
-
 import java.util.Iterator;
 
 public class RoadSpot implements Unit{
@@ -27,18 +27,19 @@ public class RoadSpot implements Unit{
         this.connected = _connected;
     }
 
-    public RoadSpot(String _jsonDataString) throws ParseException {
-        final JSONObject _data = (JSONObject) jsonParser.parse( _jsonDataString);
+    public RoadSpot(String _jsonDataString) throws ParseException, JSONException {
+        final JSONObject _rawData = (JSONObject) jsonParser.parse(_jsonDataString);
+        final JSONObject _data = _rawData.get("data");
         final JSONObject _gps = (JSONObject) _data.get("gps");
         final JSONArray _connected = (JSONArray) _data.get("connected");
-        System.out.println("Parsing json string to object: " + _jsonDataString);
 
-        this.number = Integer.parseInt( _data.get("number").toString());
+        this.number = (int) _data.get("number");
         this.gps = new GPS( (double) _gps.get("longitude"),
                             (double) _gps.get("latitude"));
+
         this.connected = new ArrayList<Integer>();
         for( int idx = 0; idx < _connected.size(); idx++)
-            this.connected.add( Integer.parseInt( _connected.get(idx).toString()) );
+            this.connected.add(  (int) _connected.get(idx));
     }
 
     private int get_number(){ return this.number;}
@@ -46,7 +47,7 @@ public class RoadSpot implements Unit{
     private ArrayList<Integer> get_connected(){ return this.connected;}
     // private Iterator<Integer> get_list_iterator() { return this.connected.iterator();}
 
-    public static ArrayList<RoadSpot> get_listified(String _jsonArrayDataString) throws ParseException {
+    public static ArrayList<RoadSpot> get_listified(String _jsonArrayDataString) throws ParseException, JSONException {
         ArrayList<RoadSpot> _retDataList = new ArrayList<RoadSpot>();
         JSONObject _jsonData = (JSONObject) jsonParser.parse(_jsonArrayDataString);
         final JSONArray _jsonList = (JSONArray) _jsonData.get("data");

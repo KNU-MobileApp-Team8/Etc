@@ -1,4 +1,4 @@
-
+import org.json.JSONException;
 import org.json.simple.parser.ParseException;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -9,7 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class ConnectionManager {
-    private static final String API_SERVER_HOST = "http://49.236.134.66:3389";
+    private static final String API_SERVER_HOST = "http://127.0.0.1:3000";
     private static final String API_BASE_PATH = "/api";
     private static final String HttpMethodType = "GET";
     private static final String BUILDING_PATH = "/building";
@@ -17,16 +17,16 @@ public class ConnectionManager {
 
     public ConnectionManager(){}
 
-    public ArrayList<Building> get_all_buildings() throws ParseException {
+    public ArrayList<Building> get_all_buildings() throws ParseException, JSONException {
         return Building.get_listified( request(BUILDING_PATH));
     }
-    public ArrayList<RoadSpot> get_all_roadSpots() throws ParseException {
+    public ArrayList<RoadSpot> get_all_roadSpots() throws ParseException, JSONException {
         return RoadSpot.get_listified( request(ROADSPOT_PATH));
     }
-    public Building get_building_with_number(int _number) throws ParseException {
+    public Building get_building_with_number(int _number) throws ParseException, JSONException {
         return new Building( request(BUILDING_PATH + "/" + _number));
     }
-    public RoadSpot get_roadSpot_with_number(int _number) throws ParseException {
+    public RoadSpot get_roadSpot_with_number(int _number) throws ParseException, JSONException {
         return new RoadSpot( request( ROADSPOT_PATH + "/" + _number));
     }
 

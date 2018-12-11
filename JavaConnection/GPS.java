@@ -7,11 +7,6 @@ public class GPS {
         this.latitude = _latitude;
     }
 
-    public GPS( String _longitude, String _latitude){
-        this.longitude = Double.parseDouble( _longitude);
-        this.latitude = Double.parseDouble( _latitude);
-    }
-
     @Override
     public String toString() {
         return String.format("{longitude: %s, latitude: %s}", this.longitude, this.latitude);
